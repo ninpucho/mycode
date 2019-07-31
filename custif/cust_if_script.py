@@ -10,10 +10,10 @@ def ip_check(s):
         for x in ip_list:
             if x.isnumeric():
                 #print(f"{x}")
-                if int(x) >= 0 and int(x) <= 255:
+                if (int(x) >= 0 and int(x) <= 255):
                     pass
                 else:
-                    return {"status": status, "response": error_message}
+                    return {"status": False, "response": error_message}
             else:
                 return {"status": False, "response": error_message}
     else:
@@ -25,6 +25,12 @@ def main():
     do_run = True
 
     actions = [
+            {
+                "description": "Ping IPv4",
+                "command": "ping {}",
+                "input": "Please enter an IPv4 Address: ",
+                "type": "ipv4"
+            },            
             {
                 "description": "Get IPv4 Route",
                 "command": "show ip route {}",
@@ -67,7 +73,7 @@ def main():
         print("=" * 50)
         user_input = input("Please make a selection: ")
         success_message = "Congragulations you have sent the following command \n{}\n" + ("bla " * 25)
-    
+        user_value = "" 
         if user_input.isnumeric():
             user_input = int(user_input) - 1
             if user_input == -1:
@@ -84,15 +90,21 @@ def main():
                             if ip["status"]:
                                 my_output = "Congragulations you have sent the following command \n" + actions[user_input]["command"].format(user_value) + "\n" + ("bla " * 25)
                                 exit_check = False
-                            elif user_value.lower() == "exit":
-                                exit_check = False
-                                my_output = "User has exited IPv4 checks"
+                            #elif user_value.lower() == "exit":
+                            #    exit_check = False
+                            #    my_output = "User has exited IPv4 checks"
                             else:
                                 print("ERROR: ", ip["response"])
-                                print("Type EXIT to quit IPv4 Checks")
+                                #print("Type EXIT to quit IPv4 Checks")
                         else:
                             my_output = success_message.format(actions[user_input]["command"].format(user_value))
                             exit_check = False
+                        if exit_check:
+                            end_loop = input("Try again(Y/n)? ")
+                            if end_loop.lower() == "n":
+                                exit_check = False
+                        
+                        
                 else:
                     my_output = success_message.format(actions[user_input]["command"].format(user_value))
 
@@ -104,7 +116,13 @@ def main():
             print(f"What are you thinking {user_input} is not in the list of options....")
 
         if user_input != -1:
-            input("Press Enter to continue")
+            user_input = input("Continue(Y/n)? ")
+            if user_input.lower() == "n":
+                do_run = False
+
+    print("You chose to quit this awsome script, have a great day!!!")
+
+
 
 
 main()
