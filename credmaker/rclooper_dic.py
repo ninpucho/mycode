@@ -29,11 +29,15 @@ i = 0
 # Open CSV file using with no need to close
 with open(csv_file,newline="") as f:
     # Read CSV file as a dictionary and loop thru rows
-    for row in csv.DictReader(f):
+    csv_data = csv.DictReader(f)
+    for row in csv_data:
         i+=1
         out_file_name = out_file_prefix + "%d"%(i,)
         # open and output file using template.
         with open(out_file_name,"w") as out_file:
             print(template_contents.format(**row),end="",file=out_file)
+
+print("\n" * 3)
+print(f"Created {i} files with a prefix of {out_file_prefix}......")
 # Closing template file as it was not opened using with
 template.close()
