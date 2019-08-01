@@ -11,7 +11,7 @@ print("="*100)
 dnsfile = open("dnsservers.txt")
 
 dnslist = dnsfile.readlines()
-
+print(dnsfile.read())
 for svr in dnslist:
     print(svr, end="")
 
